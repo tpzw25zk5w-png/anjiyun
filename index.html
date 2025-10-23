@@ -1,346 +1,634 @@
-        <!-- 图表 2 -->
-        <div class="bg-light p-6 rounded-2xl shadow-sm reveal-element" style="transition-delay: 0.2s">
-          <h3 class="text-xl font-bold mb-6">客户行业分布</h3>
-          <div class="h-80">
-            <canvas id="industryChart"></canvas>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>政升互联网科技 - 边缘计算与内容分发网络服务提供商</title>
+  <!-- 引入外部资源 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#36CFC9',
+            dark: '#1D2129',
+            light: '#F2F3F5'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .bg-gradient-tech {
+        background: linear-gradient(135deg, #165DFF 0%, #36CFC9 100%);
+      }
+      .transition-custom {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+  </style>
+</head>
+
+<body class="font-sans text-dark bg-white">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed w-full top-0 z-50 transition-custom bg-white/90 backdrop-blur-sm shadow-sm">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <!-- Logo区域 -->
+        <a href="#" class="flex items-center space-x-2">
+          <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/25ef4c2a226c483d9d8c3541d1e77460.jpg~tplv-a9rns2rl98-24-95-exif:1080:1080.image?rcl=20251023145318B79F0CEB23806E186E58&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1761807199&x-signature=lYT%2Funa2ZlG1cw%2Bz7qKIs%2F1%2F2vw%3D" 
+               alt="政升科技Logo" 
+               class="h-10 w-auto">
+          <span class="text-xl font-bold text-primary">政升科技</span>
+        </a>
+        
+        <!-- 桌面导航 -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="#home" class="text-dark hover:text-primary transition-custom font-medium">首页</a>
+          <a href="#about" class="text-dark hover:text-primary transition-custom font-medium">关于我们</a>
+          <a href="#services" class="text-dark hover:text-primary transition-custom font-medium">核心业务</a>
+          <a href="#partners" class="text-dark hover:text-primary transition-custom font-medium">合作伙伴</a>
+          <a href="#contact" class="text-dark hover:text-primary transition-custom font-medium">联系我们</a>
+          <a href="#contact" class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full transition-custom font-medium">
+            合作咨询
+          </a>
+        </nav>
+        
+        <!-- 移动端菜单按钮 -->
+        <button id="menuBtn" class="md:hidden text-dark focus:outline-none">
+          <i class="fa fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+      <div class="container mx-auto px-4 py-3 space-y-3">
+        <a href="#home" class="block py-2 text-dark hover:text-primary transition-custom">首页</a>
+        <a href="#about" class="block py-2 text-dark hover:text-primary transition-custom">关于我们</a>
+        <a href="#services" class="block py-2 text-dark hover:text-primary transition-custom">核心业务</a>
+        <a href="#partners" class="block py-2 text-dark hover:text-primary transition-custom">合作伙伴</a>
+        <a href="#contact" class="block py-2 text-dark hover:text-primary transition-custom">联系我们</a>
+        <a href="#contact" class="block text-center bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full transition-custom">
+          合作咨询
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 英雄区域 -->
+    <section id="home" class="pt-28 pb-20 md:pt-36 md:pb-28 bg-gradient-to-br from-light to-white overflow-hidden">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row items-center">
+          <div class="md:w-1/2 mb-10 md:mb-0">
+            <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-dark mb-4">
+              边缘计算与<br>
+              <span class="text-primary">内容分发网络</span><br>
+              解决方案提供商
+            </h1>
+            <p class="text-lg text-gray-600 mb-8 max-w-lg">
+              赤峰政升互联网科技有限责任公司，专注于为运营商及企业客户提供高效、稳定的边缘计算与内容分发网络服务。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <a href="#services" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full transition-custom font-medium text-center">
+                了解业务
+              </a>
+              <a href="#contact" class="border-2 border-primary text-primary hover:bg-primary/5 px-8 py-3 rounded-full transition-custom font-medium text-center">
+                联系我们
+              </a>
+            </div>
+          </div>
+          <div class="md:w-1/2 relative">
+            <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-custom">
+              <img src="https://picsum.photos/id/180/800/600" alt="边缘计算技术图示" class="w-full h-auto">
+            </div>
+            <div class="absolute -bottom-6 -right-6 w-40 h-40 bg-secondary/20 rounded-full blur-3xl"></div>
+            <div class="absolute -top-6 -left-6 w-40 h-40 bg-primary/20 rounded-full blur-3xl"></div>
           </div>
         </div>
       </div>
     </section>
-    
-    <!-- 联系我们 -->
-    <section id="contact" class="py-20 bg-gradient-to-br from-primary/5 to-white">
+
+    <!-- 关于我们 -->
+    <section id="about" class="py-20 bg-white">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col lg:flex-row gap-12">
-          <div class="lg:w-1/2 reveal-element">
-            <span class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-              联系我们
-            </span>
-            <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">
-              让我们一起<br>实现您的业务目标
-            </h2>
-            <p class="text-muted text-lg mb-8">
-              无论您有任何疑问或需求，我们的团队都将随时为您提供专业的咨询和支持，期待与您的合作。
-            </p>
-            
-            <div class="space-y-6">
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary flex-shrink-0">
-                  <i class="fa fa-map-marker text-xl"></i>
-                </div>
-                <div>
-                  <h4 class="font-bold mb-1">公司地址</h4>
-                  <p class="text-muted">内蒙古自治区赤峰市松山区新天地商务广场</p>
-                </div>
-              </div>
-              
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary flex-shrink-0">
-                  <i class="fa fa-phone text-xl"></i>
-                </div>
-                <div>
-                  <h4 class="font-bold mb-1">联系电话</h4>
-                  <p class="text-muted">400-123-4567</p>
-                </div>
-              </div>
-              
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary flex-shrink-0">
-                  <i class="fa fa-envelope text-xl"></i>
-                </div>
-                <div>
-                  <h4 class="font-bold mb-1">电子邮箱</h4>
-                  <p class="text-muted">contact@zhengshengtech.com</p>
-                </div>
-              </div>
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">关于政升科技</h2>
+          <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            赤峰政升互联网科技有限责任公司成立于2025年，是一家专注于边缘计算与内容分发网络领域的高科技企业。
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="relative">
+            <div class="relative z-10 rounded-2xl overflow-hidden shadow-xl">
+              <img src="https://picsum.photos/id/3/600/400" alt="公司办公环境" class="w-full h-auto">
+            </div>
+            <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/10 rounded-full"></div>
+          </div>
+          
+          <div>
+            <h3 class="text-2xl font-bold mb-6 text-dark">公司简介</h3>
+            <div class="space-y-4 text-gray-600">
+              <p>赤峰政升互联网科技有限责任公司（简称"政升科技"）成立于2025年9月29日，总部位于内蒙古赤峰市宁城县小城子镇。</p>
+              <p>公司秉承"热烈而坚定，真诚而温柔"的理念，致力于为客户提供高质量的边缘计算和内容分发网络解决方案。</p>
+              <p>我们的团队由行业资深专家组成，拥有丰富的技术经验和创新能力，能够为运营商及各类企业客户提供定制化的技术服务。</p>
             </div>
             
-            <div class="mt-8 flex gap-4">
-              <a href="#" class="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white text-primary rounded-full flex items-center justify-center transition-custom">
-                <i class="fa fa-weixin"></i>
-              </a>
-              <a href="#" class="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white text-primary rounded-full flex items-center justify-center transition-custom">
-                <i class="fa fa-weibo"></i>
-              </a>
-              <a href="#" class="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white text-primary rounded-full flex items-center justify-center transition-custom">
-                <i class="fa fa-linkedin"></i>
-              </a>
-              <a href="#" class="w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white text-primary rounded-full flex items-center justify-center transition-custom">
-                <i class="fa fa-youtube-play"></i>
-              </a>
+            <div class="grid grid-cols-2 gap-6 mt-10">
+              <div class="bg-light p-6 rounded-xl">
+                <div class="text-primary text-3xl mb-2"><i class="fa fa-calendar-check-o"></i></div>
+                <h4 class="font-bold mb-1">成立时间</h4>
+                <p class="text-gray-600">2025年9月29日</p>
+              </div>
+              <div class="bg-light p-6 rounded-xl">
+                <div class="text-primary text-3xl mb-2"><i class="fa fa-map-marker"></i></div>
+                <h4 class="font-bold mb-1">公司地址</h4>
+                <p class="text-gray-600">赤峰市宁城县小城子镇</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心业务 -->
+    <section id="services" class="py-20 bg-light">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">核心业务</h2>
+          <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            我们专注于边缘计算与内容分发网络领域，为客户提供高效、稳定、安全的技术解决方案。
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <!-- 业务1 -->
+          <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-custom group">
+            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-custom">
+              <i class="fa fa-server text-primary text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4">边缘计算</h3>
+            <p class="text-gray-600 mb-6">
+              我们提供边缘计算解决方案，将计算能力部署在网络边缘，降低延迟，提高数据处理效率，
+              为物联网、自动驾驶、实时监控等场景提供强大支持。
+            </p>
+            <ul class="space-y-2 mb-6">
+              <li class="flex items-center text-gray-600">
+                <i class="fa fa-check text-secondary mr-2"></i>
+                低延迟数据处理
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fa fa-check text-secondary mr-2"></i>
+                分布式节点部署
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fa fa-check text-secondary mr-2"></i>
+                边缘与云端协同
+              </li>
+            </ul>
+            <a href="#contact" class="text-primary font-medium hover:text-primary/80 transition-custom inline-flex items-center">
+              了解更多 <i class="fa fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+          
+          <!-- 业务2 -->
+          <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-custom group">
+            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-custom">
+              <i class="fa fa-exchange text-primary text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4">内容分发网络</h3>
+            <p class="text-gray-600 mb-6">
+              我们的内容分发网络(CDN)解决方案能够将内容高效分发到全球各地，提高内容加载速度，
+              优化用户体验，减轻源服务器负担，保障服务稳定性。
+            </p>
+            <ul class="space-y-2 mb-6">
+              <li class="flex items-center text-gray-600">
+                <i class="fa fa-check text-secondary mr-2"></i>
+                全球节点覆盖
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fa fa-check text-secondary mr-2"></i>
+                智能内容缓存
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fa fa-check text-secondary mr-2"></i>
+                负载均衡与容灾
+              </li>
+            </ul>
+            <a href="#contact" class="text-primary font-medium hover:text-primary/80 transition-custom inline-flex items-center">
+              了解更多 <i class="fa fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 技术优势 -->
+        <div class="mt-20">
+          <h3 class="text-2xl font-bold text-center mb-12">我们的技术优势</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-xl text-center shadow-sm hover:shadow-md transition-custom">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-bolt"></i></div>
+              <h4 class="font-bold mb-2">高效性能</h4>
+              <p class="text-gray-600 text-sm">优化的算法与架构，确保系统高效运行</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl text-center shadow-sm hover:shadow-md transition-custom">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-shield"></i></div>
+              <h4 class="font-bold mb-2">安全可靠</h4>
+              <p class="text-gray-600 text-sm">多层次安全防护，保障数据与服务安全</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl text-center shadow-sm hover:shadow-md transition-custom">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-cogs"></i></div>
+              <h4 class="font-bold mb-2">灵活定制</h4>
+              <p class="text-gray-600 text-sm">根据客户需求提供定制化解决方案</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl text-center shadow-sm hover:shadow-md transition-custom">
+              <div class="text-primary text-3xl mb-4"><i class="fa fa-life-ring"></i></div>
+              <h4 class="font-bold mb-2">专业支持</h4>
+              <p class="text-gray-600 text-sm">7×24小时技术支持，快速响应客户需求</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 合作伙伴 -->
+    <section id="partners" class="py-20 bg-white">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">合作伙伴</h2>
+          <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            我们与各类运营商及企业建立了紧密的合作关系，共同推动边缘计算与内容分发网络技术的发展与应用。
+          </p>
+        </div>
+        
+        <div class="bg-light rounded-2xl p-10">
+          <h3 class="text-xl font-bold mb-8 text-center">合作模式</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-custom">
+              <div class="text-primary text-3xl mb-4 text-center"><i class="fa fa-handshake-o"></i></div>
+              <h4 class="font-bold mb-3 text-center">运营商合作</h4>
+              <p class="text-gray-600 text-center">
+                与电信运营商深度合作，共同构建边缘计算节点与内容分发网络，提升网络性能与服务质量。
+              </p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-custom">
+              <div class="text-primary text-3xl mb-4 text-center"><i class="fa fa-building-o"></i></div>
+              <h4 class="font-bold mb-3 text-center">企业解决方案</h4>
+              <p class="text-gray-600 text-center">
+                为各类企业提供定制化的边缘计算与内容分发解决方案，满足不同行业的特定需求。
+              </p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-custom">
+              <div class="text-primary text-3xl mb-4 text-center"><i class="fa fa-lightbulb-o"></i></div>
+              <h4 class="font-bold mb-3 text-center">技术研发合作</h4>
+              <p class="text-gray-600 text-center">
+                与科研机构、高校及技术公司合作，共同研发前沿技术，推动行业创新与发展。
+              </p>
             </div>
           </div>
           
-          <div class="lg:w-1/2 reveal-element" style="transition-delay: 0.2s">
-            <div class="bg-white p-8 rounded-2xl shadow-lg">
-              <h3 class="text-2xl font-bold mb-6">发送咨询</h3>
-              <form>
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <label for="name" class="block text-sm font-medium text-muted mb-2">姓名</label>
-                    <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-muted/30 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-custom" placeholder="请输入您的姓名">
-                  </div>
-                  <div>
-                    <label for="phone" class="block text-sm font-medium text-muted mb-2">电话</label>
-                    <input type="tel" id="phone" class="w-full px-4 py-3 rounded-lg border border-muted/30 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-custom" placeholder="请输入您的电话">
-                  </div>
-                </div>
-                
-                <div class="mb-6">
-                  <label for="email" class="block text-sm font-medium text-muted mb-2">邮箱</label>
-                  <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-muted/30 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-custom" placeholder="请输入您的邮箱">
-                </div>
-                
-                <div class="mb-6">
-                  <label for="subject" class="block text-sm font-medium text-muted mb-2">咨询主题</label>
-                  <select id="subject" class="w-full px-4 py-3 rounded-lg border border-muted/30 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-custom">
-                    <option value="">请选择咨询主题</option>
-                    <option value="website">网站开发</option>
-                    <option value="app">应用开发</option>
-                    <option value="marketing">数字营销</option>
-                    <option value="cloud">云计算服务</option>
-                    <option value="other">其他服务</option>
-                  </select>
-                </div>
-                
-                <div class="mb-6">
-                  <label for="message" class="block text-sm font-medium text-muted mb-2">咨询内容</label>
-                  <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg border border-muted/30 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-custom resize-none" placeholder="请输入您的咨询内容"></textarea>
-                </div>
-                
-                <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg transition-custom font-medium shadow-md hover:shadow-lg">
-                  提交咨询
-                </button>
-              </form>
+          <div class="mt-12 text-center">
+            <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+              我们期待与更多合作伙伴携手，共同开拓边缘计算与内容分发网络的广阔市场，实现互利共赢。
+            </p>
+            <a href="#contact" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full transition-custom font-medium">
+              洽谈合作
+            </a>
+          </div>
+        </div>
+        
+        <!-- 合作伙伴展示 -->
+        <div class="mt-16">
+          <h3 class="text-xl font-bold mb-8 text-center">合作客户（示例）</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center">
+            <div class="grayscale hover:grayscale-0 transition-custom opacity-70 hover:opacity-100">
+              <img src="https://picsum.photos/id/1/120/60" alt="合作伙伴1" class="h-8 md:h-10">
             </div>
+            <div class="grayscale hover:grayscale-0 transition-custom opacity-70 hover:opacity-100">
+              <img src="https://picsum.photos/id/2/120/60" alt="合作伙伴2" class="h-8 md:h-10">
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-custom opacity-70 hover:opacity-100">
+              <img src="https://picsum.photos/id/3/120/60" alt="合作伙伴3" class="h-8 md:h-10">
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-custom opacity-70 hover:opacity-100">
+              <img src="https://picsum.photos/id/4/120/60" alt="合作伙伴4" class="h-8 md:h-10">
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-custom opacity-70 hover:opacity-100">
+              <img src="https://picsum.photos/id/5/120/60" alt="合作伙伴5" class="h-8 md:h-10">
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-custom opacity-70 hover:opacity-100">
+              <img src="https://picsum.photos/id/6/120/60" alt="合作伙伴6" class="h-8 md:h-10">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="py-20 bg-light">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">联系我们</h2>
+          <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            无论您是想了解更多关于我们的服务，还是希望成为我们的合作伙伴，都欢迎与我们联系。
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
+          <div class="lg:col-span-2 bg-white rounded-2xl p-8 shadow-lg">
+            <h3 class="text-xl font-bold mb-6">联系方式</h3>
+            
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <i class="fa fa-map-marker text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold mb-1">公司地址</h4>
+                  <p class="text-gray-600">内蒙古自治区赤峰市宁城县小城子镇</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <i class="fa fa-phone text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold mb-1">联系电话</h4>
+                  <p class="text-gray-600">17647629567</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <i class="fa fa-envelope text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold mb-1">电子邮箱</h4>
+                  <p class="text-gray-600">anjny@qq.com</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <i class="fa fa-weixin text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold mb-1">微信联系</h4>
+                  <p class="text-gray-600">扫码添加微信好友</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-10">
+              <h4 class="font-bold mb-4">微信二维码</h4>
+              <div class="bg-white p-4 rounded-lg border border-gray-200 inline-block">
+                <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/b1a69405b06e4c1a810ebfadbc674357.jpg~tplv-a9rns2rl98-24-95-exif:1080:1080.image?rcl=20251023145318B79F0CEB23806E186E58&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1761807199&x-signature=qHNPktappfMBqImSoLbftUHnZ10%3D" 
+                     alt="微信二维码" 
+                     class="w-48 h-auto">
+              </div>
+            </div>
+          </div>
+          
+          <div class="lg:col-span-3 bg-white rounded-2xl p-8 shadow-lg">
+            <h3 class="text-xl font-bold mb-6">发送消息</h3>
+            
+            <form class="space-y-6">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label for="name" class="block text-gray-700 font-medium mb-2">姓名</label>
+                  <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入您的姓名">
+                </div>
+                <div>
+                  <label for="company" class="block text-gray-700 font-medium mb-2">公司名称</label>
+                  <input type="text" id="company" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入公司名称">
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label for="phone" class="block text-gray-700 font-medium mb-2">电话</label>
+                  <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入联系电话">
+                </div>
+                <div>
+                  <label for="email" class="block text-gray-700 font-medium mb-2">邮箱</label>
+                  <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入电子邮箱">
+                </div>
+              </div>
+              
+              <div>
+                <label for="subject" class="block text-gray-700 font-medium mb-2">主题</label>
+                <select id="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom">
+                  <option value="" selected disabled>请选择咨询主题</option>
+                  <option value="edge-computing">边缘计算咨询</option>
+                  <option value="cdn">内容分发网络咨询</option>
+                  <option value="cooperation">合作洽谈</option>
+                  <option value="other">其他问题</option>
+                </select>
+              </div>
+              
+              <div>
+                <label for="message" class="block text-gray-700 font-medium mb-2">留言内容</label>
+                <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入您的留言内容"></textarea>
+              </div>
+              
+              <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg transition-custom font-medium">
+                发送消息
+              </button>
+            </form>
           </div>
         </div>
       </div>
     </section>
   </main>
-  
+
   <!-- 页脚 -->
   <footer class="bg-dark text-white py-12">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-4 gap-8 mb-8">
-        <div>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div class="md:col-span-1">
           <div class="flex items-center space-x-2 mb-6">
-            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <span class="text-white font-bold text-xl">政升</span>
-            </div>
-            <span class="text-xl font-bold">赤峰政升互联网科技</span>
+            <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/25ef4c2a226c483d9d8c3541d1e77460.jpg~tplv-a9rns2rl98-24-95-exif:1080:1080.image?rcl=20251023145318B79F0CEB23806E186E58&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1761807199&x-signature=lYT%2Funa2ZlG1cw%2Bz7qKIs%2F1%2F2vw%3D" 
+                 alt="政升科技Logo" 
+                 class="h-10 w-auto">
+            <span class="text-xl font-bold">政升科技</span>
           </div>
           <p class="text-gray-400 mb-6">
-            专注于为企业提供全方位的互联网技术解决方案，助力企业数字化转型。
+            专注于边缘计算与内容分发网络，为客户提供高效、稳定的技术解决方案。
           </p>
-          <div class="flex gap-4">
-            <a href="#" class="text-gray-400 hover:text-white transition-custom">
-              <i class="fa fa-weixin text-xl"></i>
+          <div class="flex space-x-4">
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-custom">
+              <i class="fa fa-weibo"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-custom">
-              <i class="fa fa-weibo text-xl"></i>
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-custom">
+              <i class="fa fa-weixin"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-custom">
-              <i class="fa fa-linkedin text-xl"></i>
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-custom">
+              <i class="fa fa-linkedin"></i>
             </a>
           </div>
         </div>
         
         <div>
-          <h4 class="text-lg font-bold mb-6">服务</h4>
+          <h4 class="text-lg font-bold mb-6">快速链接</h4>
           <ul class="space-y-3">
-            <li><a href="#" class="text-gray-400 hover:text-white transition-custom">网站与应用开发</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-custom">数字营销服务</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-custom">云计算解决方案</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-custom">电子商务平台</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-custom">数据分析服务</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="text-lg font-bold mb-6">公司</h4>
-          <ul class="space-y-3">
+            <li><a href="#home" class="text-gray-400 hover:text-white transition-custom">首页</a></li>
             <li><a href="#about" class="text-gray-400 hover:text-white transition-custom">关于我们</a></li>
-            <li><a href="#cases" class="text-gray-400 hover:text-white transition-custom">成功案例</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-custom">团队介绍</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-custom">新闻动态</a></li>
+            <li><a href="#services" class="text-gray-400 hover:text-white transition-custom">核心业务</a></li>
+            <li><a href="#partners" class="text-gray-400 hover:text-white transition-custom">合作伙伴</a></li>
             <li><a href="#contact" class="text-gray-400 hover:text-white transition-custom">联系我们</a></li>
           </ul>
         </div>
         
         <div>
-          <h4 class="text-lg font-bold mb-6">联系方式</h4>
+          <h4 class="text-lg font-bold mb-6">业务范围</h4>
           <ul class="space-y-3">
-            <li class="flex items-start gap-3">
-              <i class="fa fa-map-marker text-primary mt-1"></i>
-              <span class="text-gray-400">内蒙古自治区赤峰市松山区新天地商务广场</span>
+            <li><a href="#services" class="text-gray-400 hover:text-white transition-custom">边缘计算解决方案</a></li>
+            <li><a href="#services" class="text-gray-400 hover:text-white transition-custom">内容分发网络(CDN)</a></li>
+            <li><a href="#partners" class="text-gray-400 hover:text-white transition-custom">运营商合作</a></li>
+            <li><a href="#partners" class="text-gray-400 hover:text-white transition-custom">企业定制服务</a></li>
+            <li><a href="#partners" class="text-gray-400 hover:text-white transition-custom">技术研发合作</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">联系信息</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+              <span class="text-gray-400">内蒙古自治区赤峰市宁城县小城子镇</span>
             </li>
-            <li class="flex items-center gap-3">
-              <i class="fa fa-phone text-primary"></i>
-              <span class="text-gray-400">400-123-4567</span>
+            <li class="flex items-center">
+              <i class="fa fa-phone text-primary mr-3"></i>
+              <span class="text-gray-400">17647629567</span>
             </li>
-            <li class="flex items-center gap-3">
-              <i class="fa fa-envelope text-primary"></i>
-              <span class="text-gray-400">contact@zhengshengtech.com</span>
+            <li class="flex items-center">
+              <i class="fa fa-envelope text-primary mr-3"></i>
+              <span class="text-gray-400">anjny@qq.com</span>
             </li>
           </ul>
         </div>
       </div>
       
-      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2023 赤峰政升互联网科技有限责任公司. 保留所有权利.</p>
-        <div class="flex flex-col md:flex-row items-center gap-4">
-          <a href="#" class="text-gray-400 hover:text-white transition-custom">隐私政策</a>
-          <a href="#" class="text-gray-400 hover:text-white transition-custom">服务条款</a>
-          <p class="text-gray-400">蒙ICP备12345678号-1</p> <!-- 备案号 -->
-        </div>
+      <div class="border-t border-white/10 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">
+          &copy; 2025 赤峰政升互联网科技有限责任公司 版权所有
+        </p>
+        <p class="text-gray-400 text-sm">
+          ICP备案号：<a href="#" class="hover:text-white transition-custom">蒙ICP备2025031574号-1</a>
+        </p>
       </div>
     </div>
   </footer>
 
+  <!-- 返回顶部按钮 -->
+  <button id="backToTop" class="fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-custom opacity-0 invisible">
+    <i class="fa fa-arrow-up"></i>
+  </button>
+
   <!-- JavaScript -->
   <script>
     // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    const backToTop = document.getElementById('backToTop');
+    
     window.addEventListener('scroll', function() {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 50) {
-        navbar.classList.add('shadow-md');
-        navbar.classList.remove('bg-white/90');
-        navbar.classList.add('bg-white');
+      if (window.scrollY > 100) {
+        navbar.classList.add('py-2', 'shadow');
+        navbar.classList.remove('py-4');
+        backToTop.classList.remove('opacity-0', 'invisible');
+        backToTop.classList.add('opacity-100', 'visible');
       } else {
-        navbar.classList.remove('shadow-md');
-        navbar.classList.add('bg-white/90');
-        navbar.classList.remove('bg-white');
+        navbar.classList.add('py-4');
+        navbar.classList.remove('py-2', 'shadow');
+        backToTop.classList.add('opacity-0', 'invisible');
+        backToTop.classList.remove('opacity-100', 'visible');
       }
     });
     
     // 移动端菜单切换
-    document.getElementById('menuBtn').addEventListener('click', function() {
-      const mobileMenu = document.getElementById('mobileMenu');
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuBtn.addEventListener('click', function() {
       mobileMenu.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('i');
+      if (mobileMenu.classList.contains('hidden')) {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      } else {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      }
     });
     
-    // 数字计数器动画
-    function animateCounter(id, target, duration = 2000) {
-      const element = document.getElementById(id);
-      const start = 0;
-      const increment = target / (duration / 16);
-      let current = start;
-      
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          clearInterval(timer);
-          element.textContent = target;
-        } else {
-          element.textContent = Math.floor(current);
-        }
-      }, 16);
-    }
-    
-    // 滚动显示动画
-    const revealElements = document.querySelectorAll('.reveal-element');
-    const revealOnScroll = function() {
-      for (let i = 0; i < revealElements.length; i++) {
-        const windowHeight = window.innerHeight;
-        const elementTop = revealElements[i].getBoundingClientRect().top;
-        const elementVisible = 150;
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
         
-        if (elementTop < windowHeight - elementVisible) {
-          revealElements[i].classList.add('animate-fade-in');
+        // 关闭移动端菜单
+        if (!mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          const icon = menuBtn.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
         }
-      }
-      
-      // 检查计数器是否进入视图
-      const counters = document.getElementById('counter1');
-      if (counters && counters.getBoundingClientRect().top < window.innerHeight - 150) {
-        animateCounter('counter1', 120);  // 成功案例
-        animateCounter('counter2', 50);   // 专业团队
-        animateCounter('counter3', 300);  // 服务客户
-        animateCounter('counter4', 10);   // 行业经验
-        window.removeEventListener('scroll', revealOnScroll);
-      }
-    };
-    
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll(); // 初始检查
-    
-    // 客户评价轮播
-    const testimonialSlider = document.querySelector('.testimonial-slider');
-    const prevBtn = document.getElementById('prevTestimonial');
-    const nextBtn = document.getElementById('nextTestimonial');
-    
-    prevBtn.addEventListener('click', () => {
-      testimonialSlider.scrollBy({ left: -400, behavior: 'smooth' });
-    });
-    
-    nextBtn.addEventListener('click', () => {
-      testimonialSlider.scrollBy({ left: 400, behavior: 'smooth' });
-    });
-    
-    // 图表初始化
-    window.addEventListener('load', function() {
-      // 项目数量增长图表
-      const projectCtx = document.getElementById('projectChart').getContext('2d');
-      new Chart(projectCtx, {
-        type: 'line',
-        data: {
-          labels: ['2019', '2020', '2021', '2022', '2023'],
-          datasets: [{
-            label: '项目数量',
-            data: [12, 35, 58, 85, 120],
-            borderColor: '#165DFF',
-            backgroundColor: 'rgba(22, 93, 255, 0.1)',
-            tension: 0.4,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-      
-      // 客户行业分布图表
-      const industryCtx = document.getElementById('industryChart').getContext('2d');
-      new Chart(industryCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['电商', '金融', '教育', '医疗', '其他'],
-          datasets: [{
-            data: [35, 25, 20, 15, 5],
-            backgroundColor: [
-              '#165DFF',
-              '#36CFC9',
-              '#FF7D00',
-              '#722ED1',
-              '#F5222D'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom'
-            }
-          },
-          cutout: '70%'
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
         }
       });
     });
+    
+    // 返回顶部
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // 表单提交处理
+    const contactForm = document.querySelector('#contact form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // 这里可以添加表单验证和提交逻辑
+        alert('感谢您的留言，我们会尽快与您联系！');
+        contactForm.reset();
+      });
+    }
   </script>
 </body>
 </html>
